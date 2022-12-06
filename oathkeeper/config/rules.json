@@ -1,0 +1,26 @@
+[
+    {
+        "id": "some-id",
+        "upstream": {
+          "url": "http://localhost:9005",
+          "preserveHost": true
+        },
+        "match": {
+          "url": "http://localhost:4455/aad/ack",
+          "methods": ["GET"]
+        },
+        "authenticators": [
+          {
+            "handler": "anonymous"
+          }
+        ],
+        "authorizer": {
+          "handler": "allow"
+        },
+        "mutators": [
+          {
+            "handler": "noop"
+          }
+        ]
+      }
+]

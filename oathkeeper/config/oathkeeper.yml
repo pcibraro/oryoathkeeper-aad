@@ -1,0 +1,63 @@
+serve:
+  proxy:
+    port: 4455 # run the proxy at port 4455
+  api:
+    port: 4456 # run the api at port 4456
+
+access_rules:
+  repositories:
+    - file://etc/config/oathkeeper/rules.json
+
+errors:
+  fallback:
+    - json
+  handlers:
+    json:
+      enabled: true
+      config:
+        verbose: true
+    redirect:
+      enabled: true
+      config:
+        to: https://www.ory.sh/docs
+
+## Injecting user id and email into
+## each verified request for downstream services
+mutators:
+  noop:
+    enabled: true
+  header:
+    enabled: true
+    config:
+      headers:
+        X-User-Id: '{{ print .Subject }}'
+        X-User-email: '{{ print .Extra.email }}'
+
+authorizers:
+  allow:
+    enabled: true
+  deny:
+    enabled: true
+
+authenticators:
+  jwt:
+    enabled: true
+    config: 
+      jwks_urls:
+        ## From the auth0 settings under advance settings
+        - https://login.microsoftonline.com/f6aba1d9-da41-4ea3-8f30-4970725586a8/discovery/v2.0/keys
+      scope_strategy: none
+      required_scope: []
+      target_audience:
+      # Auth0 Client_id, tokens signed have audience set as your client_id
+        - 03dcc1f4-d8b7-42df-923e-9f261783f33d
+      trusted_issuers:
+        - https://login.microsoftonline.com/f6aba1d9-da41-4ea3-8f30-4970725586a8/v2.0
+      allowed_algorithms:
+        - RS256
+      token_from:
+        cookie: id_token
+  anonymous:
+    enabled: true
+    config:
+      subject: guest

@@ -1,0 +1,80 @@
+[
+    {
+      "id": "aad-rule",
+      "version": "v0.40.0",
+      "upstream": {
+        "url": "http://localhost:9000/aad/authorize",
+        "preserveHost": false
+      },
+      "match": {
+        "url": "http://localhost:4455/aad",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      "authenticators": [{
+          "handler": "anonymous"
+      }],
+      "authorizer": {
+        "handler": "allow"
+      },
+      "mutators": [{
+          "handler": "noop"
+      }]
+    },
+    {
+      "id": "backend-service-rule",
+      "version": "v0.40.0",
+      "upstream": {
+        "url": "http://localhost:9091",
+        "preserveHost": true
+      },
+      "match": {
+        "url": "http://localhost:4455/<(?!aad).*>",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ]
+      },
+      "authenticators": [
+        {
+          "handler": "jwt"
+        }
+      ],
+      "authorizer": {
+        "handler": "allow"
+      },
+      "mutators": [
+        {
+          "handler": "header"
+        }
+      ]
+    },
+    {
+        "id": "some-id",
+        "upstream": {
+          "url": "http://localhost:9000/hello"
+        },
+        "match": {
+          "url": "http://localhost:4455/hellos",
+          "methods": ["GET"]
+        },
+        "authenticators": [
+          {
+            "handler": "anonymous"
+          }
+        ],
+        "authorizer": {
+          "handler": "allow"
+        },
+        "mutators": [
+          {
+            "handler": "noop"
+          }
+        ]
+      }
+]
