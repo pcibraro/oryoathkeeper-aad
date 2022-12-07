@@ -96,5 +96,5 @@ app.use("/aad/ack", (req, res) => {
 const port = process.env.SERVER_PORT || 9001;
 const host = process.env.SERVER_HOST || "0.0.0.0";
 app.listen(port, host, () => {
-  console.log(`Example app listening at http://${host}:${port}`);
+  console.log(`auth service listening at http://${host}:${port}`);
 });
