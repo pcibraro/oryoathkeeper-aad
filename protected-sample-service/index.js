@@ -4,16 +4,20 @@ const app = express();
 
 app.use("/api/echo", (req, res) => {
   
-  var username = req.headers["x-auth-username"] || "none";
-  var email = req.headers["x-auth-email"] || "none";
+  var headers = [];
 
-  console.log(`username ${username}`);
-  console.log(`email ${email}`);
+  for (var key in req.headers) {
+    if(key.startsWith('x-auth-')){
+      headers.push({
+        key,
+        value: req.headers[key]
+      });
+    }
+  }
 
-  return res.json({
-    username,
-    email
-  });
+  console.log(headers);
+
+  return res.json(headers);
 });
 
 const port = process.env.SERVER_PORT || 9006;

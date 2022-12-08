@@ -30,8 +30,9 @@ mutators:
     enabled: true
     config:
       headers:
-        x-auth-username: '{{ print .Subject }}'
+        x-auth-username: '{{ print .Extra.preferred_username }}'
         x-auth-email: '{{ print .Extra.email }}'
+        x-auth-role: '{{ print .Extra.roles }}'
 
 authorizers:
   allow:
