@@ -1,26 +1,57 @@
 [
-    {
-        "id": "some-id",
-        "upstream": {
-          "url": "http://localhost:9005",
-          "preserveHost": true
-        },
-        "match": {
-          "url": "http://localhost:4455/aad/ack",
-          "methods": ["GET"]
-        },
-        "authenticators": [
-          {
-            "handler": "anonymous"
-          }
-        ],
-        "authorizer": {
-          "handler": "allow"
-        },
-        "mutators": [
-          {
-            "handler": "noop"
-          }
-        ]
+  {
+    "id": "aad-rule",
+    "version": "v0.40.0",
+    "upstream": {
+      "url": "http://aad-authservice:9005",
+      "preserveHost": false
+    },
+    "match": {
+      "url": "http://localhost:4455/auth/<.*>",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    "authenticators": [{
+        "handler": "anonymous"
+    }],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "mutators": [{
+        "handler": "noop"
+    }]
+  },
+  {
+    "id": "backend-service-rule",
+    "version": "v0.40.0",
+    "upstream": {
+      "url": "http://sample-api:9006",
+      "preserveHost": true
+    },
+    "match": {
+      "url": "http://localhost:4455/<(?!auth).*>",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH"
+      ]
+    },
+    "authenticators": [
+      {
+        "handler": "jwt"
       }
+    ],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "mutators": [
+      {
+        "handler": "header"
+      }
+    ]
+  }
 ]

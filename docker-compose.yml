@@ -22,14 +22,25 @@ services:
   
   aad-authservice:
     image: pcibraro/aad-authservice:latest
-    ports:
-      - 9005:9005
+    #ports:
+    #  - 9005:9005
     environment:
-      - SERVER_PORT=9005
-      - AAD_URL=https://login.microsoftonline.com/f6aba1d9-da41-4ea3-8f30-4970725586a8/oauth2/v2.0
-      - AAD_CLIENT_ID=03dcc1f4-d8b7-42df-923e-9f261783f33d
-      - AAD_CLIENT_SECRET=fHS8Q~tsW2JVEAg1tOa.dxGIkOf7b1MXFobt4apa
-      - OATHKEEPER_URL=http://localhost:4455
+      - SERVER_PORT=${SERVER_PORT:-9005}
+      - AAD_TENANT=${ADD_TENANT}
+      - AAD_CLIENT_ID=${AAD_CLIENT}
+      - AAD_CLIENT_SECRET=${AAD_CLIENT_SECRET}
+      - REQUIRE_SECURE_COOKIE=${REQUIRE_SECURE_COOKIE:-false}
+      - OATHKEEPER_URL=${OATHKEEPER_URL}
+    restart: on-failure
+    networks:
+      - intranet
+
+  sample-api:
+    image: pcibraro/protected-sample-service:latest
+    ports:
+      - 9006:9006
+    environment:
+      - SERVER_PORT=9006
     restart: on-failure
     networks:
       - intranet

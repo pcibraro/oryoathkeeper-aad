@@ -16,7 +16,7 @@ app.use("/api/echo", (req, res) => {
   });
 });
 
-const port = process.env.SERVER_PORT || 9002;
+const port = process.env.SERVER_PORT || 9006;
 const host = process.env.SERVER_HOST || "0.0.0.0";
 app.listen(port, host, () => {
   console.log(`protected api listening at http://${host}:${port}`);
