@@ -19,15 +19,29 @@ services:
       - intranet
     volumes:
       - ./oathkeeper/config:/etc/config/oathkeeper
-  
+
+  #keto:
+  #  image: oryd/keto:v0.10.0-alpha.0
+  #  ports:
+  #    - "4466:4466"
+  #    - "4467:4467"
+  #  command: serve -c /home/ory/keto.yml
+  #  restart: on-failure
+  #  volumes:
+  #    - type: bind
+  #      source: ./keto/config/keto.yml
+  #      target: /home/ory/keto.yml
+  #  networks:
+  #    - intranet
+      
   aad-authservice:
     image: pcibraro/aad-authservice:latest
     #ports:
     #  - 9005:9005
     environment:
       - SERVER_PORT=${SERVER_PORT:-9005}
-      - AAD_TENANT=${ADD_TENANT}
-      - AAD_CLIENT_ID=${AAD_CLIENT}
+      - AAD_TENANT=${AAD_TENANT}
+      - AAD_CLIENT_ID=${AAD_CLIENT_ID}
       - AAD_CLIENT_SECRET=${AAD_CLIENT_SECRET}
       - REQUIRE_SECURE_COOKIE=${REQUIRE_SECURE_COOKIE:-false}
       - OATHKEEPER_URL=${OATHKEEPER_URL}
@@ -41,6 +55,16 @@ services:
       - 9006:9006
     environment:
       - SERVER_PORT=9006
+    restart: on-failure
+    networks:
+      - intranet
+
+  front-end:
+    image: pcibraro/frontend:latest
+    environment:
+      - REACT_APP_ROOT_URL=${OATHKEEPER_URL}
+    ports:
+      - 8098:8098
     restart: on-failure
     networks:
       - intranet

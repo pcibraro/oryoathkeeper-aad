@@ -6,7 +6,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { AuthProvider } from "./context/AuthContext";
 
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
+const baseUrl = 'front/app'; // document.getElementsByTagName('base')[0].getAttribute('href') + '/app';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(

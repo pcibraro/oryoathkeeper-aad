@@ -40,6 +40,8 @@ authorizers:
   deny:
     enabled: true
 
+        
+
 authenticators:
   jwt:
     enabled: true

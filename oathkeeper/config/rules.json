@@ -7,7 +7,31 @@
       "preserveHost": false
     },
     "match": {
-      "url": "http://localhost:4455/auth/<.*>",
+      "url": "http://localhost:4455/back/auth/<.*>",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    "authenticators": [{
+        "handler": "anonymous"
+    }],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "mutators": [{
+        "handler": "noop"
+    }]
+  },
+  {
+    "id": "frontend-rule",
+    "version": "v0.40.0",
+    "upstream": {
+      "url": "http://front-end:8098/app",
+      "preserveHost": false
+    },
+    "match": {
+      "url": "http://localhost:4455/front/<.*>",
       "methods": [
         "GET",
         "POST"
@@ -31,7 +55,7 @@
       "preserveHost": true
     },
     "match": {
-      "url": "http://localhost:4455/<(?!auth).*>",
+      "url": "http://localhost:4455/back/<(?!auth).*>",
       "methods": [
         "GET",
         "POST",

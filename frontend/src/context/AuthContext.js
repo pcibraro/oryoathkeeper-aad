@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect, useContext } from "react";
 
-const rootUrl = 'http://localhost:4455/auth';
+const rootUrl = process.env.REACT_APP_ROOT_URL + '/auth'; //'http://localhost:4455/auth';
+
+console.log(`root url ${rootUrl}`);
 
 export const AuthContext = React.createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -25,7 +27,7 @@ export const AuthProvider = ({
     }, []);
 
     const login = () => {
-        window.location.href = `${rootUrl}/login?redirect_uri=http://localhost:3000`;
+        window.location.href = `${rootUrl}/login?redirect_uri=${process.env.REACT_APP_ROOT_URL}/front/app`;
     }
 
     const logout = () => {
