@@ -1,8 +1,8 @@
 ﻿import React, { useState, useEffect, useContext } from "react";
 
-const rootUrl = process.env.REACT_APP_ROOT_URL + '/auth'; //'http://localhost:4455/auth';
-
-console.log(`root url ${rootUrl}`);
+//TODO: Environment variables are not working when running in a container 
+const rootUrl = 'http://localhost:4455/back/auth'; //process.env.REACT_APP_ROOT_URL + '/auth';
+const redirectUri = 'http://localhost:4455/front/';
 
 export const AuthContext = React.createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -27,7 +27,7 @@ export const AuthProvider = ({
     }, []);
 
     const login = () => {
-        window.location.href = `${rootUrl}/login?redirect_uri=${process.env.REACT_APP_ROOT_URL}/front/app`;
+        window.location.href = `${rootUrl}/login?redirect_uri=${redirectUri}`;
     }
 
     const logout = () => {

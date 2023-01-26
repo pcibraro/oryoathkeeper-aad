@@ -16,7 +16,7 @@ const AAD_CLIENT_ID = process.env.AAD_CLIENT_ID;
 const AAD_CLIENT_SECRET = process.env.AAD_CLIENT_SECRET;
 const REQUIRE_SECURE_COOKIE = process.env.REQUIRE_SECURE_COOKIE || false;
 
-const AAD_REDIRECT_URL = `${OATHKEEPER_URL}/auth/exchange`;
+const AAD_REDIRECT_URL = `${OATHKEEPER_URL}/exchange`;
 const COOKIE_KEY = "id_token";
 
 const AAD_URL = `https://login.microsoftonline.com/${AAD_TENANT}/oauth2/v2.0`
@@ -47,9 +47,9 @@ const exchangeToken = async ({ code, redirect_uri }) => {
   return body;
 };
 
-app.use("/auth/login", (req, res) => {
+app.use("/login", (req, res) => {
   const scope = [ "openid", "profile", "email" ]
-  const redirect_uri = req.query.redirect_uri || `${OATHKEEPER_URL}/auth/whoaim`;
+  const redirect_uri = req.query.redirect_uri || `${OATHKEEPER_URL}/whoaim`;
   const query = [
     "response_type=code",
     "prompt=login",
@@ -62,7 +62,7 @@ app.use("/auth/login", (req, res) => {
   return res.redirect(redirectUrl);
 });
 
-app.use("/auth/exchange", (req, res) => {
+app.use("/exchange", (req, res) => {
   console.log("req.headers", req.headers);
   console.log("req.query", req.query);
   console.log("req.cookie", req.cookies);
@@ -78,7 +78,7 @@ app.use("/auth/exchange", (req, res) => {
     });
 });
 
-app.use("/auth/logout", (req, res) => {
+app.use("/logout", (req, res) => {
     const query = [
     `client_id=${AAD_CLIENT_ID}`,
     `post_logout_redirect_uri=${req.query.redirect_uri}`,
@@ -88,7 +88,7 @@ app.use("/auth/logout", (req, res) => {
   res.redirect(logoutUrl)
 });
 
-app.use("/auth/whoami", cors(), (req, res) => {
+app.use("/whoami", cors(), (req, res) => {
     if(!req.cookies[COOKIE_KEY]) {
       return res.json({authenticated : false });
     }
@@ -102,7 +102,7 @@ app.use("/auth/whoami", cors(), (req, res) => {
     });
 });
 
-app.use("/auth/ack", cors(), (req, res) => {
+app.use("/ack", cors(), (req, res) => {
     return res.json({msg: 'hello'});
 });
 

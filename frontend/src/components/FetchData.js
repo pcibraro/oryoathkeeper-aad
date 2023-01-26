@@ -6,7 +6,7 @@ export const FetchData = () => {
 
     const fetchEcho = async () => {
         
-        const response = await fetch('http://localhost:4455/api/echo');
+        const response = await fetch('http://localhost:4455/back/api/echo');
         const json = await response.json();
 
         setEchoData(json);
@@ -14,11 +14,16 @@ export const FetchData = () => {
     }
 
     const renderEchoDataTable = function (data) {
+        console.log('data');
+        console.log(data);
+        var rows = data.map(function(o, i) {
+            return (
+                <span>{o.value}</span>
+            )    
+        });
+        
         return (
-            <div>
-                <span>{data.username}</span>
-                <span>{data.email}</span>
-            </div>
+            <div>{rows}</div>
         )
     }
 

@@ -1,22 +1,19 @@
-FROM node:15.4 as build
-
-# Create app directory
-WORKDIR /react-app
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-RUN npm install
-
-# Bundle app source
+# ==== CONFIGURE =====
+# Use a Node 16 base image
+FROM node:16-alpine 
+# Set the working directory to /app inside the container
+WORKDIR /app
+# Copy app files
 COPY . .
-
+# ==== BUILD =====
+# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
+RUN npm ci 
+# Build the app
 RUN npm run build
-
-FROM nginx
-
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-
-COPY --from=build /react-app/build /usr/share/nginx/html
+# ==== RUN =======
+# Set the env to "production"
+ENV NODE_ENV production
+# Expose the port on which the app will be running (3000 is the default that `serve` uses)
+EXPOSE 3000
+# Start the app
+CMD [ "npx", "serve", "build" ]

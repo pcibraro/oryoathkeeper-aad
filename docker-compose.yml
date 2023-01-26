@@ -64,7 +64,7 @@ services:
     environment:
       - REACT_APP_ROOT_URL=${OATHKEEPER_URL}
     ports:
-      - 8098:8098
+      - 8098:3000
     restart: on-failure
     networks:
       - intranet

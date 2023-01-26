@@ -1,0 +1,7 @@
+#Build the docker images for the frontend and APIs
+
+1. Go to /auth-service and run "docker build . -t pcibraro/aad-authservice"
+2. Go to /frontend and run "docker build . -t pcibraro/frontend"
+3. Go to /protected-sample-service and run "docker build . -t pcibraro/protected-sample-service"
+4. Go to the root folder and run "docker-compose up". Make sure the .env file is present before running the command
+5. Open a browser and navigate to http://localhost:4455/front

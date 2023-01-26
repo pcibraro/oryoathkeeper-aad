@@ -4,7 +4,8 @@
     "version": "v0.40.0",
     "upstream": {
       "url": "http://aad-authservice:9005",
-      "preserveHost": false
+      "preserveHost": false,
+      "strip_path": "/back/auth"
     },
     "match": {
       "url": "http://localhost:4455/back/auth/<.*>",
@@ -27,7 +28,8 @@
     "id": "frontend-rule",
     "version": "v0.40.0",
     "upstream": {
-      "url": "http://front-end:8098/app",
+      "url": "http://front-end:3000/",
+      "strip_path": "/front",
       "preserveHost": false
     },
     "match": {
@@ -52,7 +54,8 @@
     "version": "v0.40.0",
     "upstream": {
       "url": "http://sample-api:9006",
-      "preserveHost": true
+      "strip_path": "/back",
+      "preserveHost": false
     },
     "match": {
       "url": "http://localhost:4455/back/<(?!auth).*>",
